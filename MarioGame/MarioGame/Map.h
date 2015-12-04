@@ -11,5 +11,5 @@ public:
 	~Map();
 	
 private:
-	const string key[];
+	string key[];
 };
