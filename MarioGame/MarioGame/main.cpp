@@ -10,6 +10,7 @@
 */
 
 #include <SFML/Graphics.hpp>
+#include "menu.h"
 
 int main()
 {
@@ -30,6 +31,13 @@ int main()
         window.draw(shape);
         window.display();
     }
+
+	/*
+	To access main game window, type Menu::_mainGameWindow
+	It is a sf::RenderWindow type
+	*/
+
+	Menu::StartGame(); 
 
     return 0;
 }
