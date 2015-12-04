@@ -4,7 +4,7 @@
 
 	Authors
 		Benjamin Herrmann
-		___
+		Michael Duncan
 		___
 		___
 */
