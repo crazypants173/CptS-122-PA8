@@ -26,36 +26,40 @@ void Game::GameLoop()
 	_mainGameWindow.clear(sf::Color(255,255,255));
 	_mainGameWindow.display();
 
-	while(_mainGameWindow.pollEvent(curEvnt))
+	switch(_gStatus)
 	{
-		switch(_gStatus)
-		{
-			case Menuing:
-				Menu runGame; // create a menu
-				Menu::menuOptions option = runGame.displayMenuOptions(_mainGameWindow); // display the menu
-
-				switch (option)
-				{
-					case Menu::None: 
-						break;
-					case Menu::ExitGame: 
-						_isExit = true; 
-						break; 
-					case Menu::PlayGame: // Implement the starting of the game
-						break; 
-					case Menu::Scoreboard: // Implement the scoreboard
-						break; 
-				}
-				break;
-		}
-
-		if (curEvnt.type == sf::Event::Closed)
-		{
-			_gStatus = Exiting;
-			_isExit = true;
-
+		case Menuing: 
+			showMenu();
 			break;
-		}
+		case Playing:
+			// Implement me
+			break;
+		case Scoreboarding:
+			break;
+		case Exiting:
+			_isExit = true;
+			break;
+	}
+}
+
+void Game::showMenu()
+{
+	Menu menu;
+	Menu::menuOptions selected = menu.displayMenuOptions(_mainGameWindow);
+
+	switch (selected)
+	{
+		case Menu::PlayGame:
+			_gStatus = Playing;
+			break;
+		case Menu::Scoreboard:
+			_gStatus = Scoreboarding;
+			break;
+		case Menu::ExitGame:
+			_gStatus = Exiting;
+			break;
+		case Menu::None:
+			break;
 	}
 }
 

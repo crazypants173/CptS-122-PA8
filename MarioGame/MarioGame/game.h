@@ -26,6 +26,8 @@ class Game
 		static void GameLoop(); // Run based upon current game state
 
 	private:
+		static void showMenu(); // Display the menu - Changes _gStatus according to the appropriate response
+
 		static bool _isExit; // Bool for an exit status of the game
 		static gameStatus _gStatus; // Current status of the game
 		static sf::RenderWindow _mainGameWindow; // Main game window

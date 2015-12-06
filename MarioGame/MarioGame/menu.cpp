@@ -6,9 +6,8 @@ using std::cout;
 
 Menu::menuOptions Menu::displayMenuOptions(sf::RenderWindow &window)
 {
-	sf::Texture img; 
-	img.loadFromFile("img/Menu.png");
-	sf::Sprite sprite(img);
+	this->img.loadFromFile("img/Menu.png");
+	sprite.setTexture(img);
 
 	// Play Game Button
 	_menuItems[0].rect.top = 225; 
@@ -35,6 +34,7 @@ Menu::menuOptions Menu::displayMenuOptions(sf::RenderWindow &window)
 	window.display();
 
 	menuOptions retVal = _GetMouseClick(window);// Return None to continue menuing
+
 
 	return retVal;
 }

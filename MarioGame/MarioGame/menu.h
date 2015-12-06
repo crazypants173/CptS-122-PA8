@@ -17,6 +17,9 @@ class Menu
 		menuOptions displayMenuOptions(sf::RenderWindow & window); // Display options to the window 
 
 	private:	
+		sf::Texture img; // Attempting to fix code
+		sf::Sprite sprite;
+
 		menuOptions _HandleClick(int x, int y); // Handle mouse clicks
 		menuOptions _GetMouseClick(sf::RenderWindow & window); // Get the mouse click from the window
 		menuItem _menuItems[3]; // List of buttons
