@@ -9,6 +9,10 @@ void Game::StartGame()
 		return; 
 
 	_mainGameWindow.create(sf::VideoMode(800,600,32), "Mario Clone");
+	
+	/*hero.Load("img/Hero_duck.png"); I didnt realize we had two windows!
+	hero.SetPosition(3,3);*/
+
 	_gStatus = Menuing;
 
 	while(!_isExit)
@@ -24,6 +28,9 @@ void Game::GameLoop()
 	sf::Event curEvnt; // Remove after testing - will screw up event stack
 
 	_mainGameWindow.clear(sf::Color(255,255,255));
+
+	/*hero.Draw(_mainGameWindow);*/
+
 	_mainGameWindow.display();
 
 	switch(_gStatus)
@@ -80,3 +87,4 @@ void Game::showMenu()
 gameStatus Game::_gStatus = Starting;
 bool Game::_isExit = false; 
 sf::RenderWindow Game::_mainGameWindow;
+//Collision_Detection Game:: hero;
