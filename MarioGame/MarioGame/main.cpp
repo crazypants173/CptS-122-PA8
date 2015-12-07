@@ -10,8 +10,15 @@
 */
 
 #include <SFML/Graphics.hpp>
-#include "menu.h"
+#include "game.h"
 #include "Map.h"
+
+/*
+	To access main game window, type Game::getMainWin(); - returns a reference to the main window
+	It is a sf::RenderWindow type
+
+	You can also have func(sf::RenderWindow & window) as a parameter to a function and it will work
+*/
 
 int main()
 {
@@ -46,12 +53,7 @@ int main()
         window.display();
     }
 
-	/*
-	To access main game window, type Menu::_mainGameWindow
-	It is a sf::RenderWindow type
-	*/
-
-	Menu::StartGame(); 
+	Game::StartGame();
 
     return 0;
 }

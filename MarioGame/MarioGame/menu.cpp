@@ -1,66 +1,73 @@
 #include "menu.h"
+#include <iostream>
 
-void Menu::StartGame()
+using std::exception;
+using std::cout;
+
+Menu::menuOptions Menu::displayMenuOptions(sf::RenderWindow &window)
 {
-	if (_gStatus != Starting)
-		return; 
+	this->img.loadFromFile("img/Menu.png");
+	sprite.setTexture(img);
 
-	_isExit = false; 
-	_mainGameWindow.create(sf::VideoMode(800,600,32), "Testing Mario Game"); 
+	// Play Game Button
+	_menuItems[0].rect.top = 225; 
+	_menuItems[0].rect.height = 45;
+	_menuItems[0].rect.left = 285; 
+	_menuItems[0].rect.width = 230;
+	_menuItems[0].action = PlayGame; 
+	
+	// Scoreboard Button
+	_menuItems[1].rect.top = 275; 
+	_menuItems[1].rect.height = 45;
+	_menuItems[1].rect.left = 285; 
+	_menuItems[1].rect.width = 230;
+	_menuItems[1].action = Scoreboard; 
 
-	_gStatus = Starting;
+	// Exit Game Button
+	_menuItems[2].rect.top = 320;
+	_menuItems[2].rect.height = 45; 
+	_menuItems[2].rect.left = 285; 
+	_menuItems[2].rect.width = 230; 
+	_menuItems[2].action = ExitGame;
 
-	while (!_isExit)
-	{
-		_menu(); 
-	}
+	window.draw(sprite); 
+	window.display();
 
-	_mainGameWindow.close(); 
+	menuOptions retVal = _GetMouseClick(window);// Return None to continue menuing
+
+
+	return retVal;
 }
 
-void Menu::_menu()
+Menu::menuOptions Menu::_HandleClick(int x, int y)
 {
-	_gStatus = Menuing;  
+	int index = 0; 
 
-	menuOptions optionChoice = None; 
-
-	sf::Event currentEvent;
-
-	while(_mainGameWindow.pollEvent(currentEvent))
+	for (index = 0; index < 3; index++)
 	{
-		switch (_gStatus)
+		sf::Rect<int> menuItemRect = _menuItems[index].rect; // Take the size of the rectangle for the current item
+		if (menuItemRect.top < y && (menuItemRect.top + menuItemRect.height) > y // Check if at the right height
+			&& menuItemRect.left < x && (menuItemRect.width + menuItemRect.left) > x) // check if at right width
 		{
-			case Menuing:
-				optionChoice = _displayMenuOptions();
-				switch (optionChoice)
-				{
-				case None: break;
-				case PlayGame: _gStatus = Playing;
-					break;
-				case Scoreboard: _gStatus = Scoreboarding;
-					break;
-				case ExitGame: _isExit = true; 
-					break; 
-				}
-				break; 
+			return _menuItems[index].action;
+		}
+	}
+	
+	return None; // Not in range
+}
+
+Menu::menuOptions Menu::_GetMouseClick(sf::RenderWindow & window)
+{
+	sf::Event curEvnt;
+
+	while(true)
+	{
+		while(window.pollEvent(curEvnt))
+		{
+			if (curEvnt.type == sf::Event::MouseButtonPressed)
+				return this->_HandleClick(curEvnt.mouseButton.x, curEvnt.mouseButton.y);
+			if (curEvnt.type == sf::Event::Closed)
+				return ExitGame;
 		}
 	}
 }
-/*
-____________________________________________________________________________________
-____________________________________________________________________________________
-_______________________________IMPLEMENT ME!!!!_____________________________________
-____________________________________________________________________________________
-____________________________________________________________________________________
-*/
-menuOptions Menu::_displayMenuOptions()
-{
-	_mainGameWindow.clear(sf::Color(255,0,0));
-    _mainGameWindow.display();
-
-	return None; // Return None to continue menuing
-}
-
-gameStatus Menu::_gStatus = Starting;
-bool Menu::_isExit = false; 
-sf::RenderWindow Menu::_mainGameWindow;

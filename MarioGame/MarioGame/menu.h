@@ -2,19 +2,25 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 
-enum gameStatus {Starting, Menuing, Playing, Scoreboarding, Exiting};
-enum menuOptions {None, PlayGame, Scoreboard, ExitGame};
 
 class Menu
 {
 	public:
-		static void StartGame(); // Start the game
-		
-	private:
-		static void _menu(); // 
-		static menuOptions _displayMenuOptions(); 
+		enum menuOptions {None, PlayGame, Scoreboard, ExitGame}; // Names of menu options
 
-		static bool _isExit; 
-		static gameStatus _gStatus; 
-		static sf::RenderWindow _mainGameWindow; 
+		struct menuItem 
+		{
+			sf::Rect<int> rect;
+			menuOptions action; 
+		}; 
+
+		menuOptions displayMenuOptions(sf::RenderWindow & window); // Display options to the window 
+
+	private:	
+		sf::Texture img; // Attempting to fix code
+		sf::Sprite sprite;
+
+		menuOptions _HandleClick(int x, int y); // Handle mouse clicks
+		menuOptions _GetMouseClick(sf::RenderWindow & window); // Get the mouse click from the window
+		menuItem _menuItems[3]; // List of buttons
 };
