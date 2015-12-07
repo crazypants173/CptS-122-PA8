@@ -21,7 +21,7 @@ void Game::StartGame()
 
 void Game::GameLoop()
 {
-	sf::Event curEvnt;
+	sf::Event curEvnt; // Remove after testing - will screw up event stack
 
 	_mainGameWindow.clear(sf::Color(255,255,255));
 	_mainGameWindow.display();
@@ -33,13 +33,27 @@ void Game::GameLoop()
 			break;
 		case Playing:
 			// Implement me
+			_mainGameWindow.pollEvent(curEvnt); // remove
+			 
+			if (curEvnt.type == sf::Event::Closed) // remove 
+			{
+				_gStatus = Exiting;
+				_isExit = true;
+			}
 			break;
 		case Scoreboarding:
+			_mainGameWindow.pollEvent(curEvnt); //remove
+
+			if (curEvnt.type == sf::Event::Closed) //remove
+			{
+				_gStatus = Exiting;
+				_isExit = true;
+			}
 			break;
 		case Exiting:
 			_isExit = true;
 			break;
-	}
+	};
 }
 
 void Game::showMenu()
