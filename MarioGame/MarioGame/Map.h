@@ -20,6 +20,7 @@ using sf::Sprite;
 using sf::RenderWindow;
 using sf::RenderTexture;
 using sf::Drawable;
+using sf::FloatRect;
 
 class Map:public Drawable
 {
@@ -29,6 +30,8 @@ public:
 	void load(string filename);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	Texture getTexture();
+	bool collides(float x, float y);
+
 private:
 	void drawToTexture(RenderTexture& rt);
 	void loadTiles();

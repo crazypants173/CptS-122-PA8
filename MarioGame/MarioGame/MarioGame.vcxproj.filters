@@ -27,6 +27,9 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Collision_Detection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="gameNetworking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -41,8 +44,19 @@
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision_Detection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="gameNetworking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MarioGame.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -151,4 +151,15 @@ Texture Map::getTexture()
 	return rt.getTexture();
 }
 
+bool Map::collides(float x, float y)
+{
+	int column = x/(float)TILE_WIDTH;
+	int row = (y - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
 
+	if(row<0 || column > MAP_WIDTH-1 || column < 0 || row > MAP_HEIGHT-1 || row < 0) //if it is about the top block
+	{
+		return false;
+	}
+	
+	return (mapSprite[row][column] != nullptr);
+}

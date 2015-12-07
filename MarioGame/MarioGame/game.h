@@ -5,7 +5,7 @@
 */
 
 #pragma once
-
+#include "Collision_Detection.h"
 #include "Map.h"
 #include "menu.h"
 
@@ -31,4 +31,5 @@ class Game
 		static bool _isExit; // Bool for an exit status of the game
 		static gameStatus _gStatus; // Current status of the game
 		static sf::RenderWindow _mainGameWindow; // Main game window
+		//static Collision_Detection hero; //our main character
 }; 

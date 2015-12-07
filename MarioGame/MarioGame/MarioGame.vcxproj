@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision_Detection.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameNetworking.cpp" />
     <ClCompile Include="main.cpp" />
@@ -91,10 +92,15 @@
     <ClCompile Include="menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision_Detection.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameNetworking.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MarioGame.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
