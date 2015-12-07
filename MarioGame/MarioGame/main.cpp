@@ -26,7 +26,7 @@ int main()
 	m.load("test.map");
 
 	sf::Clock c;
-	c.getElapsedTime();
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -38,8 +38,10 @@ int main()
 
 		window.clear(sf::Color::Blue);
 		window.setView(v);
+
 		v.move(200.0 * c.getElapsedTime().asSeconds(), 0);
 		c.restart();
+
 		window.draw(m);
         window.display();
     }
