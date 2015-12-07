@@ -1,8 +1,4 @@
 #include "menu.h"
-#include <iostream>
-
-using std::exception;
-using std::cout;
 
 Menu::menuOptions Menu::displayMenuOptions(sf::RenderWindow &window)
 {
@@ -34,7 +30,6 @@ Menu::menuOptions Menu::displayMenuOptions(sf::RenderWindow &window)
 	window.display();
 
 	menuOptions retVal = _GetMouseClick(window);// Return None to continue menuing
-
 
 	return retVal;
 }
