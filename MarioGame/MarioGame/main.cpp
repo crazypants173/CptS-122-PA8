@@ -5,8 +5,8 @@
 	Authors
 		Benjamin Herrmann
 		Michael Duncan
-		___
-		___
+		Patrick Stewart
+		Jake Bogen
 */
 
 #include <SFML/Graphics.hpp>
