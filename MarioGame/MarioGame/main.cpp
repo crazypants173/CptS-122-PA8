@@ -49,6 +49,11 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+	//sf::Clock c;
+	Collision_Detection cd; 
+	cd.Load("img/Hero_duck2.png");
+	cd.SetPosition(0,300);
+	
 
 		window.clear(sf::Color::Blue);
 		window.setView(v);
