@@ -1,5 +1,13 @@
 #include "game.h"
 
+/*
+	To access main game window, type Game::getMainWin(); - returns a reference to the main window
+	It is a sf::RenderWindow type
+
+	In game.cpp (this file), you can also use _mainGameWindow as the window parameter
+
+	You can also use func(sf::RenderWindow &window) as a parameter to a function and it will work
+*/
 
 void Game::StartGame()
 {
@@ -8,13 +16,12 @@ void Game::StartGame()
 
 	_mainGameWindow.create(sf::VideoMode(800,600,32), "Mario Clone");
 	_networking.setDefaultUsernameScore();
-	/*hero.Load("img/Hero_duck.png"); I didnt realize we had two windows!
-	hero.SetPosition(3,3);*/
+	
 
 	sf::Thread netSendThread(Game::runNetworkSend);
-	//sf::Thread netRecvThread(Game::runNetworkRecv);
+	sf::Thread netRecvThread(Game::runNetworkRecv);
 
-	//netRecvThread.launch();
+	netRecvThread.launch();
 	netSendThread.launch();
 
 	_gStatus = Menuing;	
@@ -24,7 +31,7 @@ void Game::StartGame()
 		GameLoop();
 	}
 
-	//netRecvThread.terminate();
+	netRecvThread.terminate();
 	netSendThread.terminate();
 
 	_mainGameWindow.close(); 
@@ -34,6 +41,9 @@ void Game::StartGame()
 */
 void Game::GameLoop()
 {
+	hero.Load("img/Hero_duck2.png");
+	hero.SetPosition(3,3);
+
 	sf::Event curEvnt; // Remove after testing - will screw up event stack
 
 	_mainGameWindow.clear(sf::Color(255,255,255));
@@ -49,13 +59,13 @@ void Game::GameLoop()
 			break;
 		case Playing:
 			// Implement me - If Play game is pressed - ADD THE FUNCTION THAT STARTS THE GAME
-			_mainGameWindow.pollEvent(curEvnt); // remove
+			//_mainGameWindow.pollEvent(curEvnt); // remove
 			 
-			if (curEvnt.type == sf::Event::Closed) // remove 
-			{
-				_gStatus = Exiting;
-				_isExit = true;
-			}
+			//if (curEvnt.type == sf::Event::Closed) // remove 
+			//{
+			//	_gStatus = Exiting;
+			//	_isExit = true;
+			//}
 			break;
 		case Scoreboarding:
 			// Implement me - If scoreboard is pressed - ADD THE FUNCTION THAT SHOWS THE SCOREBOARD
@@ -123,4 +133,4 @@ gameStatus Game::_gStatus = Starting;
 bool Game::_isExit = false; 
 sf::RenderWindow Game::_mainGameWindow;
 gNetwork Game::_networking; 
-//Collision_Detection Game:: hero;
+Collision_Detection Game:: hero;

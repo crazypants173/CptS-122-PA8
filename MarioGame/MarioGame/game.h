@@ -7,7 +7,7 @@
 #pragma once
 
 
-#include <time.h>
+#include <ctime>
 
 #include "SFML\Graphics.hpp"
 #include "SFML\Network.hpp"
@@ -45,5 +45,5 @@ class Game
 		static gameStatus _gStatus; // Current status of the game
 		static sf::RenderWindow _mainGameWindow; // Main game window
 		static gNetwork _networking;
-		//static Collision_Detection hero; //our main character
+		static Collision_Detection hero; //our main character
 }; 
