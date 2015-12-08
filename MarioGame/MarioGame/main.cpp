@@ -32,31 +32,51 @@ int main()
 	
 	Map m(800,600);
 	m.load("test.map");
-
+	float x = 0, y = 400;
 	Collision_Detection cd; 
 	cd.Load("img/Hero_duck2.png");
-	cd.SetPosition(0,300);
+	cd.SetPosition(x,y);
 	cd.Draw(window);
 	
 
 	sf::Clock c;
-
+	float prevx, prevy;
     while (window.isOpen())
     {
+		prevx = x;
+		prevy = y;
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+			if(event.type == sf::Event::KeyPressed)
+			{
+				if(event.key.code == sf::Keyboard::D)
+				{
+					cd.SetPosition(x+=5, y);
+				}
+				if(event.key.code == sf::Keyboard::S)
+				{
+					cd.SetPosition(x, y+=5);
+				}
+			}
         }
 
+		m.collides(prevx, prevy, x, y);
 		window.clear(sf::Color::Blue);
 		window.setView(v);
-
-		v.move(200.0 * c.getElapsedTime().asSeconds(), 0);
+		float time = c.getElapsedTime().asSeconds();
 		c.restart();
+		float move = 200.0 * time;
+		if(1/time < 60)
+		{
+			cout << "Under 120!" << endl;
+		}
+		v.move(move, 0);
+		m.moveBackground(move*.5, 0);
 		window.draw(m);
-		cd.Draw(window);
+		//cd.Draw(window);
         window.display();
 		
     }

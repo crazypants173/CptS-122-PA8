@@ -5,7 +5,6 @@ Map::Map(int width, int height)
 	windowWidth = width;
 	windowHeight = height;
 
-
 	loadTiles();
 	for(int i = 0; i < MAP_HEIGHT; i++)
 	{
@@ -18,8 +17,24 @@ Map::Map(int width, int height)
 
 	if(!shadowTextureEast.loadFromFile("img/Shadow East.png") || !shadowTextureWest.loadFromFile("img/Shadow West.png")) //Load shadows
 	{
-		std::cout << "Error loading texture" << std::endl;
+		std::cout << "Error loading shadow textures" << std::endl;
 	}
+
+	if(!backgroundTexture.loadFromFile("img/b.png"))
+	{
+		std::cout << "Error loading background texture" << std::endl;
+	}
+	backgroundTexture.setSmooth(true);
+	backgroundTexture.setRepeated(true);
+	
+	backgroundSprite.setTexture(backgroundTexture);
+
+	float scale;
+	scale = (float)height/(float)backgroundTexture.getSize().y;
+	backgroundSprite.setScale(scale, scale);
+
+	backgroundSprite.setTextureRect(sf::IntRect(0,0,MAP_WIDTH*TILE_WIDTH/scale,height/scale)); //don't judge me
+	backgroundSprite.setPosition(0,0);
 }
 
 Map::~Map()
@@ -50,7 +65,7 @@ void Map::loadTiles()
 		string path = "img/" + key[i] + ".png";
 		if(!tileTexture[i].loadFromFile(path))
 		{
-			std::cout << "Error loading texture" << std::endl;
+			std::cout << "Error loading " << key[i] << " texture" << std::endl;
 		}
 	}
 }
@@ -105,6 +120,7 @@ void Map::generateShadows()
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const
 {
+	target.draw(backgroundSprite);
 	for(int i = MAP_HEIGHT - 1; i >= 0; i--) 
 	{
 		for(int j = 0; j < MAP_WIDTH; j++)
@@ -151,15 +167,44 @@ Texture Map::getTexture()
 	return rt.getTexture();
 }
 
-bool Map::collides(float x, float y)
+bool Map::collides(float prevx, float prevy ,float &x, float &y)
 {
 	int column = x/(float)TILE_WIDTH;
 	int row = (y - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
 
-	if(row<0 || column > MAP_WIDTH-1 || column < 0 || row > MAP_HEIGHT-1 || row < 0) //if it is about the top block
+	int prevcolumn = prevx/(float)TILE_WIDTH;
+	int prevrow = (prevy - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
+
+	if(column > MAP_WIDTH-1 || column < 0 || row > MAP_HEIGHT-1 || row < 0) //if the point is outside of the map
 	{
 		return false;
 	}
 	
-	return (mapSprite[row][column] != nullptr);
+	if(mapSprite[row][column] != nullptr) //if it collided
+	{
+		if(column < prevcolumn) //moving left
+		{
+			x = prevcolumn * (float)TILE_WIDTH;
+		}
+		if(column > prevcolumn) //moving right
+		{
+			x = (prevcolumn+1) * (float)TILE_WIDTH - 1;
+		}
+		else if(row > prevrow) // moving down
+		{
+			int newy = windowHeight - TILE_HEIGHT * (prevrow) - 1; //one pixel above hit line
+			y = newy;
+		}
+		if(row < prevrow)
+		{
+			std::cout << "yup";
+		}
+		return true;
+	}
+	return false;
+}
+
+void Map::moveBackground(float x, float y)
+{
+	backgroundSprite.move(x, y);
 }

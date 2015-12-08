@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MarioGame", "MarioGame\MarioGame.vcxproj", "{A87F30DC-B064-4767-BF1C-279F15342875}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D4407786-91B8-4BCC-8131-307952D87F6E}"
+	ProjectSection(SolutionItems) = preProject
+		MarioGame\main2.cpp = MarioGame\main2.cpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

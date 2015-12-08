@@ -7,7 +7,6 @@
 
 #define MAP_WIDTH 30
 #define MAP_HEIGHT 5
-
 #define TILE_WIDTH 100
 #define TILE_HEIGHT 43
 #define TILE_LENGTH 170
@@ -30,17 +29,18 @@ public:
 	void load(string filename);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	Texture getTexture();
-	bool collides(float x, float y);
+	bool collides(float prevx, float prevy, float &x, float &y);
+	void moveBackground(float x, float y);
 
 private:
 	void drawToTexture(RenderTexture& rt);
 	void loadTiles();
 	void generateShadows();
 
-	RenderWindow *rw;
 	Sprite *mapSprite[MAP_HEIGHT][MAP_WIDTH];
 	Sprite *shadowSprite[MAP_HEIGHT][MAP_WIDTH];
+	Sprite backgroundSprite;
 	Texture tileTexture[TILES];
-	Texture shadowTextureEast, shadowTextureWest;
+	Texture shadowTextureEast, shadowTextureWest, backgroundTexture;
 	int windowHeight, windowWidth;
 };
