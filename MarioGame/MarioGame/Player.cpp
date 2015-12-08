@@ -77,6 +77,7 @@ void Player::jump(float force)
 	jumping = true;
 	falling = true;
 	gravityTimer.restart();
+	jumpTimer.restart();
 }
 
 void Player::getPos(float &px, float &py, CORNER c)
@@ -160,7 +161,9 @@ void Player::doGravity(Map &m)
 {
 	if(jumping)
 	{
-		float h = -jumpForce + gravityTimer.getElapsedTime().asSeconds() * gravityTimer.getElapsedTime().asSeconds() * 40;
+		float time = jumpTimer.getElapsedTime().asSeconds();
+		jumpTimer.restart();
+		float h = (-jumpForce + gravityTimer.getElapsedTime().asSeconds()*gravityTimer.getElapsedTime().asSeconds()*1000) * time * 10 ;
 		last_y = y;
 		y+=h;
 		playerSprite.move(0,h);

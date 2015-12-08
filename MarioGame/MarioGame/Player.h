@@ -31,6 +31,7 @@ private:
 	Texture playerTexture;
 	Sprite playerSprite;
 	Clock gravityTimer;
+	Clock jumpTimer;
 
 	bool jumping, falling;
 	int width, height;

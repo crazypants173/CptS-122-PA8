@@ -76,7 +76,7 @@ int main()
 				}
 				if(event.key.code == sf::Keyboard::Space)
 				{
-					p.jump(4);
+					p.jump(100);
 				}
 			}
 			if(event.type == sf::Event::KeyReleased)
@@ -104,7 +104,7 @@ int main()
 
 		p.checkHits(m);
 		p.update(m);
-		p.checkHits(m);
+		//p.checkHits(m);
 		//m.collides(prevx, prevy, x, y);
 		window.clear(sf::Color::Blue);
 		window.setView(v);
