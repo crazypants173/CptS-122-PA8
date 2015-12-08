@@ -2,6 +2,8 @@
 
 #include <SFML\Graphics.hpp>
 #include <string>
+#include <iostream>
+#include "Map.h"
 
 using namespace sf;
 using std::string;
@@ -19,13 +21,20 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void move(float offset_x, float offset_y);
 	void jump(float force);
+	void getLastPos(float &x, float &y, CORNER c);
+	void getPos(float &x, float &y, CORNER c);
+	void checkHits(Map &m);
+	void update(Map &m);
+	
 	
 private:
 	Texture playerTexture;
 	Sprite playerSprite;
-	Clock c;
+	Clock gravityTimer;
 
-	bool jumping;
+	bool jumping, falling;
 	int width, height;
-	float x, y, jumpForce;
+	float x, y, last_x, last_y, jumpForce;
+
+	void doGravity(Map &m);
 };

@@ -167,7 +167,7 @@ Texture Map::getTexture()
 	return rt.getTexture();
 }
 
-bool Map::collides(float prevx, float prevy ,float &x, float &y)
+bool Map::collides(float prevx, float prevy ,float &x, float &y, bool *onGround)
 {
 	int column = x/(float)TILE_WIDTH;
 	int row = (y - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
@@ -180,6 +180,11 @@ bool Map::collides(float prevx, float prevy ,float &x, float &y)
 		return false;
 	}
 	
+	int temprow = (y + .002 - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
+	if(onGround != nullptr && temprow > row && mapSprite[temprow][column] != nullptr)
+	{
+		*onGround = true;
+	}
 	if(mapSprite[row][column] != nullptr) //if it collided
 	{
 		if(column < prevcolumn) //moving left
@@ -188,12 +193,11 @@ bool Map::collides(float prevx, float prevy ,float &x, float &y)
 		}
 		if(column > prevcolumn) //moving right
 		{
-			x = (prevcolumn+1) * (float)TILE_WIDTH - 1;
+			x = (prevcolumn+1) * (float)TILE_WIDTH - .001;
 		}
-		else if(row > prevrow) // moving down
+		if(row > prevrow) // moving down
 		{
-			int newy = windowHeight - TILE_HEIGHT * (prevrow) - 1; //one pixel above hit line
-			y = newy;
+			y = windowHeight - TILE_HEIGHT * (MAP_HEIGHT - prevrow) + TILE_HEIGHT - .001;
 		}
 		if(row < prevrow)
 		{

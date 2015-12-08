@@ -29,7 +29,7 @@ public:
 	void load(string filename);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	Texture getTexture();
-	bool collides(float prevx, float prevy, float &x, float &y);
+	bool collides(float prevx, float prevy, float &x, float &y, bool *onGround = nullptr);
 	void moveBackground(float x, float y);
 
 private:
