@@ -78,6 +78,8 @@ void gNetwork::listenToNetwork()
 
 				this->clients.push_back(respondingClients);
 			}
+
+			socket.unbind();
 		}
 		else
 			cout << "ERROR: Socket not bound" << endl; 

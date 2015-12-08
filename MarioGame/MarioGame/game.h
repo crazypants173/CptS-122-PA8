@@ -7,7 +7,7 @@
 #pragma once
 
 
-#include <time.h>
+#include <ctime>
 
 #include "SFML\Graphics.hpp"
 #include "SFML\Network.hpp"

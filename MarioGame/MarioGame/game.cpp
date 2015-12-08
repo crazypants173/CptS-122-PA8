@@ -1,5 +1,13 @@
 #include "game.h"
 
+/*
+	To access main game window, type Game::getMainWin(); - returns a reference to the main window
+	It is a sf::RenderWindow type
+
+	In game.cpp (this file), you can also use _mainGameWindow as the window parameter
+
+	You can also use func(sf::RenderWindow &window) as a parameter to a function and it will work
+*/
 
 void Game::StartGame()
 {
@@ -12,9 +20,9 @@ void Game::StartGame()
 	hero.SetPosition(3,3);*/
 
 	sf::Thread netSendThread(Game::runNetworkSend);
-	//sf::Thread netRecvThread(Game::runNetworkRecv);
+	sf::Thread netRecvThread(Game::runNetworkRecv);
 
-	//netRecvThread.launch();
+	netRecvThread.launch();
 	netSendThread.launch();
 
 	_gStatus = Menuing;	
@@ -24,7 +32,7 @@ void Game::StartGame()
 		GameLoop();
 	}
 
-	//netRecvThread.terminate();
+	netRecvThread.terminate();
 	netSendThread.terminate();
 
 	_mainGameWindow.close(); 
