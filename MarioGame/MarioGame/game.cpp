@@ -1,7 +1,5 @@
 #include "game.h"
-#include <iostream>
 
-using std::cout;
 
 void Game::StartGame()
 {
@@ -9,7 +7,7 @@ void Game::StartGame()
 		return; 
 
 	_mainGameWindow.create(sf::VideoMode(800,600,32), "Mario Clone");
-	
+	_networking.setDefaultUsernameScore();
 	/*hero.Load("img/Hero_duck.png"); I didnt realize we had two windows!
 	hero.SetPosition(3,3);*/
 
@@ -33,13 +31,15 @@ void Game::GameLoop()
 
 	_mainGameWindow.display();
 
+	_networking.network();
+
 	switch(_gStatus)
 	{
 		case Menuing: 
 			showMenu();
 			break;
 		case Playing:
-			// Implement me
+			// Implement me - If Play game is pressed - ADD THE FUNCTION THAT STARTS THE GAME
 			_mainGameWindow.pollEvent(curEvnt); // remove
 			 
 			if (curEvnt.type == sf::Event::Closed) // remove 
@@ -49,6 +49,7 @@ void Game::GameLoop()
 			}
 			break;
 		case Scoreboarding:
+			// Implement me - If scoreboard is pressed - ADD THE FUNCTION THAT SHOWS THE SCOREBOARD
 			_mainGameWindow.pollEvent(curEvnt); //remove
 
 			if (curEvnt.type == sf::Event::Closed) //remove
@@ -87,4 +88,5 @@ void Game::showMenu()
 gameStatus Game::_gStatus = Starting;
 bool Game::_isExit = false; 
 sf::RenderWindow Game::_mainGameWindow;
+gNetwork Game::_networking; 
 //Collision_Detection Game:: hero;

@@ -5,9 +5,17 @@
 */
 
 #pragma once
+
+
+#include "SFML\Graphics.hpp"
+#include "SFML\Network.hpp"
+#include "SFML\Window.hpp"
+
+#include "gameNetworking.h"
 #include "Collision_Detection.h"
 #include "Map.h"
 #include "menu.h"
+
 
 enum gameStatus {Starting, Menuing, Playing, Scoreboarding, Exiting}; // Names for game status
 
@@ -15,7 +23,6 @@ enum gameStatus {Starting, Menuing, Playing, Scoreboarding, Exiting}; // Names f
 class Game
 {
 	public:
-		
 		static void StartGame(); // Initalizes main window, then calls menu - Menu handles from there;
 		
 		static sf::RenderWindow & getMainWin() // return main game window; 
@@ -31,5 +38,6 @@ class Game
 		static bool _isExit; // Bool for an exit status of the game
 		static gameStatus _gStatus; // Current status of the game
 		static sf::RenderWindow _mainGameWindow; // Main game window
+		static gNetwork _networking;
 		//static Collision_Detection hero; //our main character
 }; 
