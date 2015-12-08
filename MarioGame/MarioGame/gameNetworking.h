@@ -31,6 +31,16 @@ public:
 	void setUsername(string newUsername); // Sets the hosts username
 	void setHighScore(string newHighScore); // Sets the hosts high score
 
+	string getUsername()
+	{
+		return hostName.userName;
+	}
+
+	string getHighScore()
+	{
+		return hostName.highScore;
+	}
+
 	vector<gameStats> getClientsData(); // Returns the client list
 
 private:
