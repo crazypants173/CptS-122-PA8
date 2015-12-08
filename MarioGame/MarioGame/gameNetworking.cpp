@@ -27,12 +27,12 @@ void gNetwork::broadcastToNetwork()
 	}
 }
 
-gNetwork::gameStats gNetwork::listenToNetwork()
+void gNetwork::listenToNetwork()
 {
-	gameStats clientStats; // New clients stats
+	gameStats respondingClients; // New clients stats
 
-	clientStats.highScore = "";
-	clientStats.userName = ""; 
+	respondingClients.highScore = "";
+	respondingClients.userName = ""; 
 
 	if (this->allowNetworking)
 	{
@@ -53,46 +53,35 @@ gNetwork::gameStats gNetwork::listenToNetwork()
 				for (size_t index = 0; index < bytesRecv && index < 100; index++)
 				{
 					if (dataRecv[index] != ',' && !usernameOrScore)
-						clientStats.userName += dataRecv[index]; 
+						respondingClients.userName += dataRecv[index]; 
 					else if (dataRecv[index] != ',' && usernameOrScore)
-						clientStats.highScore += dataRecv[index]; 
+						respondingClients.highScore += dataRecv[index]; 
 					else // The character is a , - our delimiter
 						usernameOrScore = true; 
 				}
 
 				cout << "Sender" << sender << endl;
 
-				cout << clientStats.userName << ", " << clientStats.highScore << endl; 
+				cout << respondingClients.userName << ", " << respondingClients.highScore << endl; 
 
-				return clientStats; 
+				
+				for (vector<gameStats>::iterator index = clients.begin(); index < clients.end(); index++)
+				{
+					if (respondingClients.userName == (*index).userName)
+					{
+						if (respondingClients.highScore != (*index).highScore)
+							(*index).highScore = respondingClients.highScore;
+
+						return; 
+					}
+				}
+
+				this->clients.push_back(respondingClients);
 			}
-			else
-				cout << "No data on socket" << endl; 
 		}
 		else
 			cout << "ERROR: Socket not bound" << endl; 
 	}
-
-	return clientStats;
-}
-
-void gNetwork::network()
-{
-	this->broadcastToNetwork();
-	gameStats respondingClient = this->listenToNetwork(); 
-
-	for (vector<gameStats>::iterator index = clients.begin(); index < clients.end(); index++)
-	{
-		if (respondingClient.userName == (*index).userName)
-		{
-			if (respondingClient.highScore != (*index).highScore)
-				(*index).highScore = respondingClient.highScore;
-
-			return; 
-		}
-	}
-
-	clients.push_back(respondingClient); 
 }
 
 vector<gNetwork::gameStats> gNetwork::getClientsData()

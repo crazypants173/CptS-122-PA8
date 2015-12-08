@@ -11,16 +11,27 @@ void Game::StartGame()
 	/*hero.Load("img/Hero_duck.png"); I didnt realize we had two windows!
 	hero.SetPosition(3,3);*/
 
-	_gStatus = Menuing;
+	sf::Thread netSendThread(Game::runNetworkSend);
+	//sf::Thread netRecvThread(Game::runNetworkRecv);
+
+	//netRecvThread.launch();
+	netSendThread.launch();
+
+	_gStatus = Menuing;	
 
 	while(!_isExit)
 	{
 		GameLoop();
 	}
 
+	//netRecvThread.terminate();
+	netSendThread.terminate();
+
 	_mainGameWindow.close(); 
 }
-
+/*
+	if you want to exit the game, set _gStatus = Exiting
+*/
 void Game::GameLoop()
 {
 	sf::Event curEvnt; // Remove after testing - will screw up event stack
@@ -30,8 +41,6 @@ void Game::GameLoop()
 	/*hero.Draw(_mainGameWindow);*/
 
 	_mainGameWindow.display();
-
-	_networking.network();
 
 	switch(_gStatus)
 	{
@@ -64,6 +73,7 @@ void Game::GameLoop()
 	};
 }
 
+
 void Game::showMenu()
 {
 	Menu menu;
@@ -83,6 +93,30 @@ void Game::showMenu()
 		case Menu::None:
 			break;
 	}
+}
+
+void Game::runNetworkSend()
+{
+	bool ifSent = false; // Boolean to see if a packet was sent
+
+	while(true)
+	{
+		time_t curTime = time(NULL); 
+	
+		if(curTime % 60 == 0 && !ifSent) // Broadcast every minute
+		{
+			_networking.broadcastToNetwork();
+			ifSent = true;
+		}
+		else if (curTime % 60 != 0)
+			ifSent = false;
+	}
+}
+
+void Game::runNetworkRecv()
+{
+	while(true)
+		_networking.listenToNetwork();
 }
 
 gameStatus Game::_gStatus = Starting;

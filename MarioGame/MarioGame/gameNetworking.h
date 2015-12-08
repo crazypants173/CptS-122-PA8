@@ -25,7 +25,8 @@ public:
 		string highScore; // Given highscore for the client
 	};
 
-	void network(); // calls broadcast and listen to network - adds to clients
+	void broadcastToNetwork(); // Broadcast the players username and stats 
+	void listenToNetwork(); // Listen for UDP Broadcast - Adds entries to clients table
 
 	void setUsername(string newUsername); // Sets the hosts username
 	void setHighScore(string newHighScore); // Sets the hosts high score
@@ -33,9 +34,6 @@ public:
 	vector<gameStats> getClientsData(); // Returns the client list
 
 private:
-	void broadcastToNetwork(); // Broadcast the players username and stats 
-	gameStats listenToNetwork(); // Listen for UDP Broadcast
-
 	bool allowNetworking; // If networking is allowed, respond to broadcast
 	gameStats hostName; // Stores the hosts username and highscore
 

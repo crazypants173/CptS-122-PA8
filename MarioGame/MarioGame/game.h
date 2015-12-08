@@ -7,9 +7,12 @@
 #pragma once
 
 
+#include <time.h>
+
 #include "SFML\Graphics.hpp"
 #include "SFML\Network.hpp"
 #include "SFML\Window.hpp"
+
 
 #include "gameNetworking.h"
 #include "Collision_Detection.h"
@@ -34,6 +37,9 @@ class Game
 
 	private:
 		static void showMenu(); // Display the menu - Changes _gStatus according to the appropriate response
+		static void runNetworkSend();
+		static void runNetworkRecv(); 
+
 
 		static bool _isExit; // Bool for an exit status of the game
 		static gameStatus _gStatus; // Current status of the game
