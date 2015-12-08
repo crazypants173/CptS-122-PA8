@@ -5,7 +5,7 @@
 	Authors
 		Benjamin Herrmann
 		Michael Duncan
-		___
+		Jacob Bogen
 		___
 */
 
@@ -35,7 +35,7 @@ int main()
 	Collision_Detection cd; 
 	cd.Load("img/Hero_duck2.png");
 	cd.SetPosition(0,300);
-	cd.Draw(window);
+	
 	
 
 	sf::Clock c;
