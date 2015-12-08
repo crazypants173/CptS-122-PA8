@@ -5,8 +5,8 @@
 	Authors
 		Benjamin Herrmann
 		Michael Duncan
-		Jacob Bogen
-		___
+		Jake Bogen
+		Patrick Stewart
 */
 
 #include <SFML/Graphics.hpp>
@@ -29,7 +29,7 @@ int main()
 
 	sf::View v(sf::FloatRect(0,0,800, 600));
 	window.setView(v);
-
+	
 	Map m(800,600);
 	m.load("test.map");
 
@@ -63,7 +63,7 @@ int main()
 		window.draw(m);
 		cd.Draw(window);
         window.display();
-
+		
     }
 
 	Game::StartGame();
