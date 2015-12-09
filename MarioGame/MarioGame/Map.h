@@ -5,12 +5,12 @@
 #include <fstream>
 #include <iostream>
 
-#define MAP_WIDTH 30
+#define MAP_WIDTH 48
 #define MAP_HEIGHT 5
 #define TILE_WIDTH 100
 #define TILE_HEIGHT 43
 #define TILE_LENGTH 170
-#define TILES 8
+#define TILES 11
 
 using std::string;
 using std::ifstream;

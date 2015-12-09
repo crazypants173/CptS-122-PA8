@@ -110,13 +110,13 @@ int main()
 		{
 			time = c.getElapsedTime().asSeconds();
 			c.restart();
-			p.move(-400 * time, 0);
+			p.move(-500 * time, 0);
 		}
 		else if(moveRight)
 		{
 			time = c.getElapsedTime().asSeconds();
 			c.restart();
-			p.move(400 * time, 0);
+			p.move(500 * time, 0);
 		}
 		else
 		{

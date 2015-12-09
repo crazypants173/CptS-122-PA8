@@ -62,7 +62,7 @@ Map::~Map()
 
 void Map::loadTiles()
 {
-	string key[] = {"Brown Block", "Dirt Block", "Grass Block", "Plain Block", "Stone Block", "Wall Block", "Water Block", "Wood Block"};
+	string key[] = {"Brown Block", "Dirt Block", "Grass Block", "Plain Block", "Stone Block", "Wall Block", "Water Block", "Wood Block", "Rock", "Tree Short", "Lava Block"};
 	for(int i = 0; i < TILES; i++)
 	{
 		string path = "img/" + key[i] + ".png";
@@ -203,6 +203,11 @@ bool Map::collides(float prevx, float prevy ,float &x, float &y, bool *onGround)
 		if(row < prevrow)
 		{
 			//std::cout << "yup";
+		}
+		if(mapSprite[row][column]->getTexture() == &tileTexture[10])
+		{
+			y = windowHeight*2;
+			return true;
 		}
 		collided = true;
 	}
