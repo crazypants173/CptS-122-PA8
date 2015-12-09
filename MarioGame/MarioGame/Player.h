@@ -16,7 +16,7 @@ typedef enum CORNER
 class Player:public Drawable
 {
 public:
-	Player(string filename);
+	Player(string filename, string filename2);
 	void setPos(float x, float y, CORNER c);
 	void setScale(float scale);
 	void setJumpSprite(string filename);
@@ -29,15 +29,21 @@ public:
 	void update(Map &m);
 	void flip();
 	void unflip();
-	
+	void nextWalk();
+	void setWalking(bool walk);
 	
 private:
-	Texture playerTexture, jumpTexture;
+	Texture playerTexture[2], jumpTexture;
 	Sprite playerSprite;
 	Clock gravityTimer;
 	Clock jumpTimer;
+	Clock walkTimer;
+	Font font;
+	Text text;
 
-	bool jumping, falling;
+	int walk;
+
+	bool jumping, falling, walking, lost;
 	float width, height;
 	float x, y, last_x, last_y, jumpForce;
 

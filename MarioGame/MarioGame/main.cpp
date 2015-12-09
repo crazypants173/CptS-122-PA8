@@ -14,6 +14,7 @@
 #include "Map.h"
 #include "gameNetworking.h"
 #include "Player.h"
+#include "Enemy.h"
 
 /*
 	To access main game window, type Game::getMainWin(); - returns a reference to the main window
@@ -37,10 +38,13 @@ int main()
 	Collision_Detection cd; 
 	cd.Load("img/Hero_duck2.png");
 
-	Player p("img/duck_small.png");
+	Player p("img/duck_small.png", "img/duck_walk_small.png");
 	p.setJumpSprite("img/duck_jump_small.png");
 	p.setPos(0,350, TOP_LEFT);
 	//p.setScale(.5);
+
+	Enemy e(2100, 300, 2100, 2500);
+	e.setSpeed(300);
 
 	cd.SetPosition(x,y);
 	cd.Draw(window);
@@ -64,6 +68,7 @@ int main()
 				{
 					moveRight = true;
 					moveLeft = false;
+					p.setWalking(true);
 					if(flipped)
 					{
 						p.unflip();
@@ -74,6 +79,7 @@ int main()
 				{
 					moveLeft = true;
 					moveRight = false;
+					p.setWalking(true);
 					if(!flipped)
 					{
 						p.flip();
@@ -86,7 +92,9 @@ int main()
 				}
 								else if(event.key.code == sf::Keyboard::S) //delete after testing
 				{
-					p.flip();
+					float a,b;
+					p.getPos(a,b, BOTTOM_RIGHT);
+					std::cout << a << "," << b << std::endl;
 				}
 				if(event.key.code == sf::Keyboard::Space)
 				{
@@ -98,14 +106,17 @@ int main()
 				if(event.key.code == sf::Keyboard::D && moveRight)
 				{
 					moveRight = false;
+					p.setWalking(false);
 				}
 				else if(event.key.code == sf::Keyboard::A && moveLeft)
 				{
 					moveLeft = false;
+					p.setWalking(false);
 				}
 			}
         }
 		float time; //= c.getElapsedTime().asMilliseconds()/1000;
+		e.move(c.getElapsedTime().asSeconds());
 		if(moveLeft)
 		{
 			time = c.getElapsedTime().asSeconds();
@@ -130,6 +141,7 @@ int main()
 		{
 			cout << "Under 60!" << endl;
 		}*/
+		e.collides(p);
 		float cx, cy, lx, ly;
 		p.getPos(cx, cy, BOTTOM_CENTER);
 		v.setCenter(sf::Vector2f(cx, 300)); //window height/2
@@ -138,6 +150,7 @@ int main()
 
 		window.draw(m);
 		window.draw(p);
+		window.draw(e);
         window.display();
 		
     }

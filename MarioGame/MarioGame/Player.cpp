@@ -1,21 +1,30 @@
 #include "Player.h"
 
-Player::Player(string filename)
+Player::Player(string filename, string filename2)
 {
 
-	if(!playerTexture.loadFromFile(filename))
+	if(!playerTexture[0].loadFromFile(filename) || !playerTexture[1].loadFromFile(filename2))
 	{
 		std::cout << "Error loading player texture" << std::endl;
 	}
-	playerSprite.setTexture(playerTexture);
-	width = playerTexture.getSize().x;
-	height = playerTexture.getSize().y;
+	playerSprite.setTexture(playerTexture[0]);
+	width = playerTexture[0].getSize().x;
+	height = playerTexture[0].getSize().y;
 	jumping = false;
 	falling = false;
 	x = 0;
 	y = 0;
 	last_x = 0;
 	last_y = 0;
+	walk = 0;
+	walking = false;
+	lost = false;
+
+	font.loadFromFile("Snaps Taste.otf");
+	text.setFont(font);
+	text.setString("Try Again?");
+	text.setCharacterSize(72);
+	text.setPosition(-130,200);
 }
 
 void Player::setPos(float nx, float ny, CORNER c = TOP_LEFT)
@@ -51,6 +60,18 @@ void Player::setScale(float scale)
 	height * scale;
 }
 
+void Player::setWalking(bool walk)
+{
+	if(!walk)
+	{
+		walking = false;
+	}
+	if(walk && !jumping)
+	{
+		walking = true;
+	}
+}
+
 void Player::setJumpSprite(string filename)
 {
 	jumpTexture.loadFromFile(filename);
@@ -59,6 +80,10 @@ void Player::setJumpSprite(string filename)
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states = RenderStates::Default) const
 {
 	target.draw(playerSprite, states);
+	if(lost && x < 800)
+	{
+		target.draw(text);
+	}
 }
 
 void Player::update(Map &m)
@@ -66,7 +91,23 @@ void Player::update(Map &m)
 	checkHits(m);
 	doGravity(m);
 	if(y > m.getHeight())
+	{
+		lost = true;
 		setPos(0,0,TOP_LEFT);
+	}
+		
+	//if(jumping)
+		//walking = false;
+	if(!walking && !jumping)
+	{
+		walk = 0;
+		playerSprite.setTexture(playerTexture[0]);
+	}
+	else if(walkTimer.getElapsedTime().asSeconds() > .125)
+	{
+		nextWalk();
+		walkTimer.restart();
+	}
 }
 
 void Player::move(float offset_x, float offset_y)
@@ -191,7 +232,7 @@ void Player::doGravity(Map &m)
 		if(y != last_y+h)
 		{
 			jumping = false;
-			playerSprite.setTexture(playerTexture);
+			playerSprite.setTexture(playerTexture[walk]);
 		}
 	}
 }
@@ -204,4 +245,11 @@ void Player::flip()
 void Player::unflip()
 {
 	playerSprite.setTextureRect(sf::IntRect(0,0,width,height));
+}
+
+void Player::nextWalk()
+{
+	walk = (walk+1)%2;
+	if(!jumping)
+		playerSprite.setTexture(playerTexture[walk]);
 }
