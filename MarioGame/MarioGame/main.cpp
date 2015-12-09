@@ -82,7 +82,7 @@ int main()
 				}
 								else if(event.key.code == sf::Keyboard::W) //delete after testing
 				{
-					p.move(0,-5);
+					p.move(0,-500);
 				}
 								else if(event.key.code == sf::Keyboard::S) //delete after testing
 				{

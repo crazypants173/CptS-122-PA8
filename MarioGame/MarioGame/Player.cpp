@@ -65,6 +65,8 @@ void Player::update(Map &m)
 {
 	checkHits(m);
 	doGravity(m);
+	if(y > m.getHeight())
+		setPos(0,0,TOP_LEFT);
 }
 
 void Player::move(float offset_x, float offset_y)

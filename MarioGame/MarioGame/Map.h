@@ -32,6 +32,7 @@ public:
 	bool collides(float prevx, float prevy, float &x, float &y, bool *onGround = nullptr);
 	void moveBackground(float x, float y);
 	void setDrawColumnRange(float x);
+	int getHeight(){return windowHeight;}
 
 private:
 	void drawToTexture(RenderTexture& rt);
