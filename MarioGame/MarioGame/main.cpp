@@ -37,8 +37,10 @@ int main()
 	Collision_Detection cd; 
 	cd.Load("img/Hero_duck2.png");
 
-	Player p("img/Hero_duck2.png");
+	Player p("img/duck_small.png");
+	p.setJumpSprite("img/duck_jump_small.png");
 	p.setPos(0,350, TOP_LEFT);
+	//p.setScale(.5);
 
 	cd.SetPosition(x,y);
 	cd.Draw(window);
@@ -46,9 +48,11 @@ int main()
 
 	sf::Clock c;
 	float prevx, prevy;
-	bool moveRight = false, moveLeft = false;
+	bool moveRight = false, moveLeft = false, flipped = false;;
+
     while (window.isOpen())
     {
+		p.getPos(prevx, prevy, BOTTOM_LEFT);
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -60,11 +64,21 @@ int main()
 				{
 					moveRight = true;
 					moveLeft = false;
+					if(flipped)
+					{
+						p.unflip();
+						flipped = false;
+					}
 				}
 				else if(event.key.code == sf::Keyboard::A)
 				{
 					moveLeft = true;
 					moveRight = false;
+					if(!flipped)
+					{
+						p.flip();
+						flipped = true;
+					}
 				}
 								else if(event.key.code == sf::Keyboard::W) //delete after testing
 				{
@@ -72,7 +86,7 @@ int main()
 				}
 								else if(event.key.code == sf::Keyboard::S) //delete after testing
 				{
-					p.move(0,5);
+					p.flip();
 				}
 				if(event.key.code == sf::Keyboard::Space)
 				{
@@ -91,33 +105,39 @@ int main()
 				}
 			}
         }
-		float time = c.getElapsedTime().asSeconds();
-		c.restart();
+		float time; //= c.getElapsedTime().asMilliseconds()/1000;
 		if(moveLeft)
 		{
+			time = c.getElapsedTime().asSeconds();
+			c.restart();
 			p.move(-400 * time, 0);
 		}
 		else if(moveRight)
 		{
+			time = c.getElapsedTime().asSeconds();
+			c.restart();
 			p.move(400 * time, 0);
 		}
-
-		p.checkHits(m);
-		p.update(m);
-		//p.checkHits(m);
-		//m.collides(prevx, prevy, x, y);
-		window.clear(sf::Color::Blue);
-		window.setView(v);
-		float move = 200.0 * time;
-		if(1/time < 60)
+		else
 		{
-			cout << "Under 120!" << endl;
+			c.restart();
 		}
-		//v.move(move, 0);
-		//m.moveBackground(move*.5, 0);
+
+		p.update(m);
+		window.clear();
+		window.setView(v);
+		/*if(1/time < 60)
+		{
+			cout << "Under 60!" << endl;
+		}*/
+		float cx, cy, lx, ly;
+		p.getPos(cx, cy, BOTTOM_CENTER);
+		v.setCenter(sf::Vector2f(cx, 300)); //window height/2
+		p.getPos(lx, ly, BOTTOM_LEFT);
+		m.moveBackground((lx-prevx)/2, 0);
+
 		window.draw(m);
 		window.draw(p);
-		//cd.Draw(window);
         window.display();
 		
     }

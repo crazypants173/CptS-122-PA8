@@ -44,6 +44,18 @@ void Player::setPos(float nx, float ny, CORNER c = TOP_LEFT)
 	playerSprite.setPosition(x, y);
 }
 
+void Player::setScale(float scale)
+{
+	playerSprite.setScale(scale, scale);
+	width * scale;
+	height * scale;
+}
+
+void Player::setJumpSprite(string filename)
+{
+	jumpTexture.loadFromFile(filename);
+}
+
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states = RenderStates::Default) const
 {
 	target.draw(playerSprite, states);
@@ -51,10 +63,8 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states = RenderStat
 
 void Player::update(Map &m)
 {
-	if(true)
-	{
-		doGravity(m);
-	}
+	checkHits(m);
+	doGravity(m);
 }
 
 void Player::move(float offset_x, float offset_y)
@@ -76,6 +86,7 @@ void Player::jump(float force)
 	jumpForce = force;
 	jumping = true;
 	falling = true;
+	playerSprite.setTexture(jumpTexture);
 	gravityTimer.restart();
 	jumpTimer.restart();
 }
@@ -100,6 +111,9 @@ void Player::getPos(float &px, float &py, CORNER c)
 		px = x+width;
 		py = y+height;
 		break;
+	case BOTTOM_CENTER:
+		px = x+(width/2.0);
+		py = y+height;
 	}
 }
 
@@ -123,13 +137,16 @@ void Player::getLastPos(float &px, float &py, CORNER c)
 		px = last_x+width;
 		py = last_y+height;
 		break;
+	case BOTTOM_CENTER:
+		px = last_x+(width/2);
+		py = last_y+height;
 	}
 }
 
 void Player::checkHits(Map &m)
 {
-	CORNER corners[2] = {BOTTOM_RIGHT, BOTTOM_LEFT};
-	bool onground[2] = {false, false};
+	CORNER corners[] = {BOTTOM_RIGHT, BOTTOM_LEFT};
+	bool onground[] = {false, false};
 
 	for(int i = 0; i < 2; i++)
 	{
@@ -143,7 +160,7 @@ void Player::checkHits(Map &m)
 		}
 	}
 
-	if(onground[0] == false && onground[1] == false) //neither corner on the ground
+	if(!onground[0] && !onground[1]) //neither corner on the ground
 	{
 		if(!jumping)
 		{
@@ -164,17 +181,25 @@ void Player::doGravity(Map &m)
 		float time = jumpTimer.getElapsedTime().asSeconds();
 		jumpTimer.restart();
 		float h = (-jumpForce + gravityTimer.getElapsedTime().asSeconds()*gravityTimer.getElapsedTime().asSeconds()*1000) * time * 10 ;
-		last_y = y;
+		/*last_y = y;
 		y+=h;
-		playerSprite.move(0,h);
+		playerSprite.move(0,h);*/
+		move(0,h);
 		checkHits(m);
 		if(y != last_y+h)
 		{
 			jumping = false;
-		}
-		else
-		{
-			std::cout << last_y << " " << y << std::endl;
+			playerSprite.setTexture(playerTexture);
 		}
 	}
+}
+
+void Player::flip()
+{
+	playerSprite.setTextureRect(sf::IntRect(width, 0, -width, height));
+}
+
+void Player::unflip()
+{
+	playerSprite.setTextureRect(sf::IntRect(0,0,width,height));
 }

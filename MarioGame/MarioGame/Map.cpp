@@ -33,8 +33,11 @@ Map::Map(int width, int height)
 	scale = (float)height/(float)backgroundTexture.getSize().y;
 	backgroundSprite.setScale(scale, scale);
 
-	backgroundSprite.setTextureRect(sf::IntRect(0,0,MAP_WIDTH*TILE_WIDTH/scale,height/scale)); //don't judge me
-	backgroundSprite.setPosition(0,0);
+	backgroundSprite.setTextureRect(sf::IntRect(0,0,MAP_WIDTH*TILE_WIDTH/scale + 2*windowWidth,height/scale)); //don't judge me
+	backgroundSprite.setPosition(-windowWidth,0);
+
+	maxColumn = MAP_WIDTH - 1;
+	minColumn = 0;
 }
 
 Map::~Map()
@@ -73,6 +76,7 @@ void Map::loadTiles()
 void Map::load(string filename)
 {
 	ifstream input;
+	findDimensions(filename);
 
 	input.open(filename, std::ios::in);
 
@@ -123,7 +127,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderSta
 	target.draw(backgroundSprite);
 	for(int i = MAP_HEIGHT - 1; i >= 0; i--) 
 	{
-		for(int j = 0; j < MAP_WIDTH; j++)
+		for(int j = minColumn; j <= maxColumn; j++)
 		{
 			if(mapSprite[i][j] != nullptr)
 			{
@@ -175,17 +179,14 @@ bool Map::collides(float prevx, float prevy ,float &x, float &y, bool *onGround)
 	int prevcolumn = prevx/(float)TILE_WIDTH;
 	int prevrow = (prevy - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
 
+	bool collided = false;
+
 	if(column > MAP_WIDTH-1 || column < 0 || row > MAP_HEIGHT-1 || row < 0) //if the point is outside of the map
 	{
-		return false;
+		collided = false;
 	}
-	
-	int temprow = (y + .002 - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
-	if(onGround != nullptr && temprow > row && mapSprite[temprow][column] != nullptr)
-	{
-		*onGround = true;
-	}
-	if(mapSprite[row][column] != nullptr) //if it collided
+
+	else if(mapSprite[row][column] != nullptr) //if it collided
 	{
 		if(column < prevcolumn) //moving left
 		{
@@ -201,14 +202,60 @@ bool Map::collides(float prevx, float prevy ,float &x, float &y, bool *onGround)
 		}
 		if(row < prevrow)
 		{
-			std::cout << "yup";
+			//std::cout << "yup";
 		}
-		return true;
+		collided = true;
 	}
-	return false;
+
+	int temprow = (y + .002 - (float)MAP_HEIGHT*TILE_HEIGHT - TILE_LENGTH)/(float)TILE_HEIGHT;
+	if(onGround != nullptr && temprow > row && mapSprite[temprow][column] != nullptr)
+	{
+		*onGround = true;
+	}
+	return collided;
 }
 
 void Map::moveBackground(float x, float y)
 {
 	backgroundSprite.move(x, y);
+}
+
+void Map::setDrawColumnRange(float x)
+{
+	int column = x/(float)TILE_WIDTH;
+	int onScreen = windowWidth/MAP_WIDTH;
+	minColumn = column - onScreen/2;
+	maxColumn = column + onScreen/2;
+	if(minColumn < 0)
+		minColumn = 0;
+	if(maxColumn > MAP_WIDTH-1)
+		maxColumn = MAP_WIDTH-1;
+}
+
+void Map::findDimensions(string filename)
+{
+	ifstream input;
+
+	input.open(filename);
+
+	string term;
+	int count = 0, lines = 0, width = 0;
+	while(!input.eof())
+	{
+		term = "";
+	while(term.find("\n") == string::npos && !input.eof())
+	{
+		char buffer[10];
+		input.getline(buffer, 1000, '\t');
+		term = buffer;
+		count++;
+	}
+	if(lines == 0)
+	{
+		width = count;
+	}
+	lines++;
+	}
+	input.close();
+	std::cout << lines << "," << width << std::endl;
 }

@@ -31,16 +31,19 @@ public:
 	Texture getTexture();
 	bool collides(float prevx, float prevy, float &x, float &y, bool *onGround = nullptr);
 	void moveBackground(float x, float y);
+	void setDrawColumnRange(float x);
 
 private:
 	void drawToTexture(RenderTexture& rt);
 	void loadTiles();
 	void generateShadows();
+	void findDimensions(string filename);
 
 	Sprite *mapSprite[MAP_HEIGHT][MAP_WIDTH];
 	Sprite *shadowSprite[MAP_HEIGHT][MAP_WIDTH];
 	Sprite backgroundSprite;
 	Texture tileTexture[TILES];
 	Texture shadowTextureEast, shadowTextureWest, backgroundTexture;
+	int maxColumn, minColumn;
 	int windowHeight, windowWidth;
 };
