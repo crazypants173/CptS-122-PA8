@@ -190,13 +190,14 @@ void Player::checkHits(Map &m)
 {
 	CORNER corners[] = {BOTTOM_RIGHT, BOTTOM_LEFT};
 	bool onground[] = {false, false};
+	bool onmap[] = {false, false};
 
 	for(int i = 0; i < 2; i++)
 	{
 		float lx, ly, nx, ny;
 		getLastPos(lx, ly, corners[i]);
 		getPos(nx, ny, corners[i]);
-		if(m.collides(lx, ly, nx, ny, &onground[i]))
+		if(onmap[i] = m.collides(lx, ly, nx, ny, &onground[i]))
 		{
 			setPos(nx, ny, corners[i]);
 			break;
